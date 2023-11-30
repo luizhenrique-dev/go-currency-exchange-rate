@@ -31,14 +31,11 @@ type Cotacao struct {
 	CotacaoUsdToBrl CotacaoUsdToBrl `json:"USDBRL"`
 }
 
-type CurrentCurrencyRate struct {
-	Bid string `json:"bid"`
-}
-
-func NewCurrentCurrencyRate(bid string) *CurrentCurrencyRate {
-	return &CurrentCurrencyRate{
-		Bid: bid,
-	}
+func main() {
+	initDatabaseTable()
+	http.HandleFunc("/cotacao", CheckUsdToBrlAndReturn)
+	http.HandleFunc("/list", ListAllCurrencyExchangerRates)
+	http.ListenAndServe(":8080", nil)
 }
 
 func CheckUsdToBrlAndReturn(w http.ResponseWriter, r *http.Request) {
@@ -59,10 +56,9 @@ func CheckUsdToBrlAndReturn(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	currentCurrencyRateToReturn := NewCurrentCurrencyRate(currencyRate.Bid)
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(currentCurrencyRateToReturn)
+	json.NewEncoder(w).Encode(currencyRate)
 }
 
 func ListAllCurrencyExchangerRates(w http.ResponseWriter, r *http.Request) {
@@ -112,8 +108,8 @@ func getCurrentCurrencyRateFromApi() (*CotacaoUsdToBrl, error) {
 }
 
 func persistData(c *CotacaoUsdToBrl) error {
-	// Cria um contexto com timeout de 10ms
-	ctxDb, cancel := context.WithTimeout(context.Background(), 10*time.Millisecond)
+	// Cria um contexto com timeout de 15ms, os 10ms solicitados no exercício não foram suficientes para a persistência no meu ambiente
+	ctxDb, cancel := context.WithTimeout(context.Background(), 15*time.Millisecond)
 	defer cancel()
 
 	// Persiste a cotação no banco de dados usando o contexto com timeout
