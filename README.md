@@ -1,4 +1,4 @@
-**Desenvolvimento de Sistemas em Go - Cotação do Dólar**
+## Desenvolvimento de Sistemas em Go - Cotação do Dólar
 
 **1. Estrutura do Projeto:**
    - client.go
@@ -26,8 +26,14 @@
 **6. Para executar o server:**
    - A porta a ser utilizada pelo servidor HTTP será a 8080, portanto ela precisa estar disponível.
    - No terminal, navegue até o diretório onde o projeto do aplicativo está localizado. Em seguida, execute o seguinte comando para executá-lo:
-   ```cd server && go run server.go database.go```
+  
+```sh
+cd server && go run server.go database.go
+```
 
 **7. Para executar o client:**
    - No terminal, navegue até o diretório onde o projeto do aplicativo está localizado. Em seguida, execute o seguinte comando para executá-lo:
-   ```cd client && go run client.go```
+
+```sh
+cd client && go run client.go
+```
